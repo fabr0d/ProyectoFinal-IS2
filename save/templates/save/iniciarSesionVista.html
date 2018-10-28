@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+body,h1,h5 {font-family: "Raleway", sans-serif}
+body, html {height: 100%}
+.bgimg {
+    background-image: url('{% static "save/wpp1.png" %}');
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;
+}
+</style>
+<body>
+
+<div class="bgimg w3-display-container w3-text-white">
+  <div class="w3-display-topmiddle w3-jumbo">
+    <p>$ave</p>
+  </div>
+  
+   <div class ="w3-container w3-display-middle">
+  	<div class="w3-container w3-black">
+      <h1>Iniciar Sesión</h1>
+    </div>
+    <div class="w3-container ">
+      {% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
+      <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <br>
+        <div align="right">
+        Correo:
+        <input type="text" name="email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" maxlength="50">
+        <br><br>
+        Contraseña:
+        <input type="password" name="password" maxlength="50">
+        <br><br>
+        </div>
+        <div align="center"><input type="submit" value="Entrar" class="w3-button w3-black"></div>
+      </form> 
+      <br>
+      <div align="center"><a href="{% url 'registro' %}" class="w3-button w3-black">Regístrate</a></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+

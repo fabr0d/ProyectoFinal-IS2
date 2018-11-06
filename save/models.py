@@ -1,6 +1,6 @@
 from django.db import models
+from decimal import *
 
-# Create your models here.
 class Question(models.Model):
 	question_text = models.CharField(max_length=200)
 	pub_date = models.DateTimeField('date published')
@@ -16,7 +16,8 @@ class Usuario(models.Model):
 	tema = models.IntegerField(default=0)
 	moneda = models.CharField(max_length=5)
 	tipoDeCuenta = models.IntegerField(default=0)
-	def autenticar(email,contra):
+	ahorro = models.DecimalField(decimal_places=2,max_digits=20,default=0)
+	def existeUsuario(email,contra):
 		user=Usuario.objects.filter(correoElectronico=email)
 		if len(user)==0:
 			return False
@@ -24,38 +25,60 @@ class Usuario(models.Model):
 			return True
 		else:
 			return False
-	def verificarExistencia(email):
+	def existeEmail(email):
 		user=Usuario.objects.filter(correoElectronico=email)
 		if len(user)==0:
-			return True
-		else:
 			return False
+		else:
+			return True
 	def registrar(email,contra):
-		user=Usuario(correoElectronico=email, contrasena=contra,tema=0,moneda="$",tipoDeCuenta=0)
+		user=Usuario(correoElectronico=email, contrasena=contra,tema=0,moneda="$",tipoDeCuenta=0,ahorro=0)
 		user.save()
 	def conseguirUsuario(email_):
 		return (Usuario.objects.get(correoElectronico=email_)).pk
+	def aumentarAhorro(monto_,user_):
+		user=Usuario.objects.get(pk=user_)
+		user.ahorro=user.ahorro+Decimal(monto_)
+		user.save()
+	def disminuirAhorro(monto_,user_):
+		user=Usuario.objects.get(pk=user_)
+		if user.ahorro >= float(monto_):
+			user.ahorro=user.ahorro-Decimal(monto_)
+			user.save()
+			return True
+		else:
+			return False
+	def reemplazarAhorro(user_,antiguo_ahorro,nuevo_ahorro):
+		user=Usuario.objects.get(pk=user_)
+		diferencia=nuevo_ahorro - antiguo_ahorro
+		user.ahorro=user.ahorro + Decimal(diferencia)
+		user.save()
 class Ingreso(models.Model):
 	fecha = models.DateTimeField()
 	nombre = models.CharField(max_length=50)
 	monto = models.DecimalField(decimal_places=2,max_digits=20)
+	ahorro = models.DecimalField(decimal_places=2,max_digits=20,default=0)
 	id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-	def anadirIngreso(fecha_,nombre_,monto_,user_):
+	def anadirIngreso(fecha_,nombre_,monto_,ahorro_,user_):
 		user=Usuario.objects.get(pk=user_)
-		ingreso=Ingreso(fecha=fecha_,nombre=nombre_,monto=monto_,id_usuario=user)
+		ingreso=Ingreso(fecha=fecha_,nombre=nombre_,monto=monto_,ahorro=ahorro_,id_usuario=user)
 		ingreso.save()
-	def editarIngreso(fecha_,nombre_,monto_,user_,ingreso_id):
+	def editarIngreso(fecha_,nombre_,monto_,ahorro_,user_,ingreso_id):
 		ingreso=Ingreso.objects.get(pk=ingreso_id)
 		ingreso.fecha=fecha_
 		ingreso.nombre=nombre_
 		ingreso.monto=monto_
+		ingreso.ahorro=ahorro_
 		ingreso.save()
 	def obtenerIngresos(user):#conseguir todos los ingresos de user
 		transacciones=Ingreso.objects.filter(id_usuario=user)
 		return transacciones
 	def conseguirIngreso(ingreso_id):#conseguir el ingreso con id= ingreso_id
 		return Ingreso.objects.get(pk=ingreso_id)
-
+	def obtenerAhorro(ingreso_id):#conseguir el ahorro de un ingreso con el ingreso_id
+		ingreso=Ingreso.objects.get(pk=ingreso_id)
+		return ingreso.ahorro
+		
 class Categoria(models.Model):
 	nombre = models.CharField(max_length=20)
 	def obtenerTodo():

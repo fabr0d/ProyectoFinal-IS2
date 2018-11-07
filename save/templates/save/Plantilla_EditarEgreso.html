@@ -45,10 +45,10 @@ body, html {height: 100%}
         <input type="date" name="fecha" value="{{egreso.fecha|date:'Y-m-d'}}" required>
         <br><br>
         Nombre:
-        <input type="text" name="nombre" value={{egreso.nombre}}>
+        <input type="text" name="nombre" maxlength="50" value={{egreso.nombre}} required>
         <br><br>
         Monto:
-        <input type="number" step="0.01" name="monto" value={{egreso.monto}} required>
+        <input type="number" step="0.01" name="monto" min="0" max="999999999" value={{egreso.monto}} required>
         <br><br>
         <div align="center">
           <input type="submit" value="registrar" class="w3-button w3-black">

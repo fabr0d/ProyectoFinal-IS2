@@ -50,7 +50,7 @@ class Usuario(models.Model):
 			return False
 	def reemplazarAhorro(user_,antiguo_ahorro,nuevo_ahorro):
 		user=Usuario.objects.get(pk=user_)
-		diferencia=nuevo_ahorro - antiguo_ahorro
+		diferencia=Decimal(nuevo_ahorro) - Decimal(antiguo_ahorro)
 		user.ahorro=user.ahorro + Decimal(diferencia)
 		user.save()
 class Ingreso(models.Model):

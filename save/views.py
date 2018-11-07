@@ -12,6 +12,8 @@ class Vista_IniciarSesion:
 		    email=request.POST['email']
 		    contra=request.POST['password']
 		except:
+			if 'user' in request.session:
+				del request.session['user']
 			return render(request, 'save/Plantilla_IniciarSesion.html')
 		if Usuario.existeEmail(email):
 			if Usuario.existeUsuario(email,contra):

@@ -38,13 +38,13 @@ body, html {height: 100%}
           <input type="date" name="fecha" value="{{ingreso.fecha|date:'Y-m-d'}}" required>
         <br><br>
         Nombre:
-        <input type="text" name="nombre" value={{ingreso.nombre}}>
+        <input type="text" name="nombre" maxlength="50" value={{ingreso.nombre}} required>
         <br><br>
         Monto:
-        <input type="number" step="0.01" name="monto" value={{ingreso.monto}} required>
+        <input type="number" step="0.01" name="monto" min="0" max="999999999" value={{ingreso.monto}} required>
         <br><br>
         Ahorro:
-        <input type="number" step="0.01" name="ahorro" value={{ingreso.ahorro}} required>
+        <input type="number" step="0.01" name="ahorro" min="0" max="999999999" value={{ingreso.ahorro}} required>
         <br><br>
         <div align="center">
           <input type="submit" value="Editar" class="w3-button w3-black">

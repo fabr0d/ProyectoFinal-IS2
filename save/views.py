@@ -212,6 +212,7 @@ class Vista_VerListado:
 		egreso_id=request.session['tmp']
 		user=request.session['user']
 		egreso=Egreso.conseguirEgreso(egreso_id)
+		categorias=Categoria.objects.all()#conseguirCategorias
 		if Vista_RegistrarEgreso.verificarNombre(nombre):
 			if Vista_RegistrarEgreso.verificarMonto(monto):
 				Egreso.editarEgreso(fecha,nombre,monto,categoria,user,egreso_id)#editar el egreso en la base de datos

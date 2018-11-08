@@ -181,7 +181,7 @@ class Vista_VerListado:
 					transacciones=Ingreso.obtenerIngresos(user) #se cambiaron datos, obtener todos los ingresos de user		
 					return render(request, 'save/Plantilla_VerListadoIngreso.html',{'error':"Ingreso editado",'transacciones':transacciones})#mostrarMensaje("Ingreso editado")
 				else:
-					#mostrarErrorAhorrroInvalidoIngreso()
+					#mostrarErrorAhfnoorrroInvalidoIngreso()
 					return render(request, 'save/Plantilla_EditarIngreso.html',{'ingreso':ingreso, 'error':"Ahorro inválido"})
 			else:
 				#mostrarErrorMontoInvalidoIngreso()

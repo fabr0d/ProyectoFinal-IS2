@@ -1,0 +1,7 @@
+organization=elpsycongro0-github
+projectKey=elpsycongroo
+serverUrl=https://sonarcloud.io
+serverVersion=7.5.0.19078
+dashboardUrl=https://sonarcloud.io/dashboard?id=elpsycongroo
+ceTaskId=AWb0i_UYhAMvTEvF4tsC
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AWb0i_UYhAMvTEvF4tsC

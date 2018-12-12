@@ -1,0 +1,93 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Control de Egresos</title>
+  <link rel="stylesheet" href='{% static "css/all.css" %}'>
+  <link rel="stylesheet" href='{% static "css/table.css" %}'>
+</head>
+<body>
+    <div class="contenedor">
+        <!-- Header -->
+        <header>
+            <!-- Logo -->
+            <p>$ave</p>
+            <br>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'inicio' %}">Inicio</a></li>
+                    <li><a href="{% url 'verListadoIngresos' %}">Ingresos</a>
+                        <ul>
+                            <li><a href="{% url 'registrarIngreso' %}">Registrar</a></li>
+                            <li><a href="{% url 'verListadoIngresos' %}">Listado</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{% url 'verListadoEgresos' %}">Egresos</a>
+                        <ul>
+                            <li><a href="{% url 'registrarEgreso' %}">Registrar</a></li>
+                            <li><a href="{% url 'verListadoEgresos' %}">Listado</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{% url 'compararPeriodos' %}">Comparar Periodos</a></li>
+                    <li><a href="{% url 'controlEgreso' %}">Control de Egresos</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <!-- Control de Egresos -->
+        {% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
+        {% for cat in montosUsados %}
+            {% for lim in montoAUsar %}
+              {% if cat.id_categoria_id == lim.id_categoria.id %}
+                {% if cat.score > lim.monto and lim.monto != 0 %}
+                  <p><strong>{{cat.id_categoria__nombre}} exedido</strong></p>
+                {% endif %}
+              {% endif %}
+           {% endfor %}
+        {% endfor %}
+        <section class="main">
+            <p>Control de Egresos</p>
+            <br>
+            <table>
+              <thead>
+                <tr>
+                  <td style="width:50%;">Categoría</td>
+                  <td style="width:25%;">Monto usado</td>
+                  <td style="width:25%;">Monto a usar</td>
+                </tr>
+              </thead>
+              <tbody>
+                <form action="{% url 'controlEgreso' %}" method="post">
+                  {% csrf_token %}
+                  {% for cat in montosUsados %}
+                  <tr>
+                    <td>{{cat.id_categoria__nombre}}</td>
+                    <td>{{cat.score}}</td>
+                    {% for lim in montoAUsar %}
+                      {% if cat.id_categoria_id == lim.id_categoria.id %}
+                        <td><input type="number" step="0.01" name="{{cat.id_categoria__nombre}}" min="0" max="999999999" value={{lim.monto}} required></td>
+                      {% endif %}
+                    {% endfor %}
+                  </tr>
+                  {% endfor %}
+                  <tr>
+                    <td colspan=1>
+                      <input type="submit" value="Editar" style="width:100%;">
+                    </td>
+                    <td colspan=2>
+                      <button type="button" onclick="window.location.href='{% url 'inicio' %}' " style="width:100%;">Volver</button>
+                    </td>
+                  </tr>
+                </form>
+              </tbody>
+            </table>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <p>DAMW.inc</p>
+        </footer>
+    </div>
+</body>
+</html>

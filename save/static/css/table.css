@@ -1,0 +1,12 @@
+.main table {
+    border-collapse: collapse;
+}
+
+.main table, td, th {
+    border: 1px solid #000;
+}
+
+.main th, td {
+  padding: 10px;
+}
+
